@@ -1,0 +1,20 @@
+{
+    "FNWL.FAST.HOLDING.HOLDING": {
+        "sheet":{
+        "N":{"NAME":"Rules Mapping", "COLS":"'MVP#','Target Filename','Attribute Name (ACORD)','FAST Rules & Transformations','FAST Table Name', 'FAST Column Name'"},
+        "S":{"NAME":"ODH Mapping", "COLS":"'Source Extract','Source column','AttributeName','Lookup table','Lookup on _id','What Goes in'"}
+        },
+        "dynamoDB": {
+        "N":{"Table":"LAKE.POLICYPARTY.ODHFNWL.JOB.METADATA","JobID":"DL-POLICYPARTY-ODHFNWL-FAST-BB-INITIAL-HOLDING-ERER"},
+        "S":{"Table":"LAKE.POLICYPARTY.ODHFNWL.JOB.METADATA","JobID":"DL-POLICYPARTY-ODHFNWL-FAST-BB-HOLDING-EREL"}
+        },
+        "s3": {
+        "MAPPING_FILE":{ "BUCKET":"rlus-productlife-genai-sdlc-poc-bucket", "PATH":"mapping-docs/ODH_Holding-Holding_FAST_NEW.xlsx" }
+        },
+        "local_path": ""
+    }
+}
+  
+  
+  
+  
