@@ -1,0 +1,32 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- release/dev
+pr:
+  branches:
+      exclude:
+          - '*'
+pool:
+  vmImage: ubuntu-latest
+
+steps:   
+- task: Docker@1
+  displayName: 'Build an image'
+  inputs:
+    containerregistrytype: 'Azure Container Registry'
+    azureSubscriptionEndpoint: 'CrewAI'
+    azureContainerRegistry: 'crewai.azurecr.io'
+    command: 'Build an image'
+    dockerFile: 'Dockerfile'
+    imageName: 'AFW-$(Build.Repository.Name):$(Build.BuildId)'
+
+- task: Docker@0
+  displayName: 'Push an Docker image copy'
+  inputs:
+    azureSubscription: CrewAI
+    azureContainerRegistry: '{"loginServer":"crewai.azurecr.io", "id" : "/subscriptions/1b4f3f5e-2dcb-4f7c-8b1d-4a6e5f3c3e8e/resourceGroups/rg-crewai-dev/providers/Microsoft.ContainerRegistry/registries/crewai"}'
+    action: 'Push an image'
+    imageName: 'AFW-$(Build.Repository.Name):$(Build.BuildId)'

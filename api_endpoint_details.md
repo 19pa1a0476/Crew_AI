@@ -1,94 +1,15 @@
-# Agent Workflow API
+# API Documentation
 
-A flexible API for creating and managing multi-step workflows with AI agents, featuring human-in-the-loop review capabilities.
-
-## User Interface
-
-![Agentic Framework UI](./agentic_framework_ui.png)
-
-*The Agentic Framework user interface showing agent selection, workflow visualization, and built-in chatbot.*
-
-## Workflow Process
-
-```mermaid
-flowchart TD
-    %% Define styles
-    classDef process fill:#f9f9f9,stroke:#666,stroke-width:1px,color:#333,font-weight:bold
-    classDef decision fill:#fffacd,stroke:#d4af37,stroke-width:1px,color:#333,font-weight:bold
-    classDef endpoint fill:#f0f8ff,stroke:#4682b4,stroke-width:2px,color:#4682b4,font-weight:bold
-    classDef highlight fill:#e6f7ff,stroke:#1890ff,stroke-width:2px,color:#1890ff,font-weight:bold
-    
-    %% Main flow nodes
-    Start([Start]) --> CheckAgents[Check Available Agents]
-    CheckAgents --> CreateWorkflow[Define Workflow Steps]
-    CreateWorkflow --> StartWorkflow[Initialize Workflow]
-    StartWorkflow --> WorkflowID[Receive Workflow ID]
-    
-    %% Status monitoring
-    subgraph WorkflowExecution [Workflow Execution Loop]
-        WorkflowID --> PollStatus[Poll Workflow Status]
-        
-        PollStatus --> StatusCheck{Step Complete?}
-        StatusCheck -- No --> PollStatus
-        StatusCheck -- Yes --> GetOutput[Get Step Output & Context]
-        
-        GetOutput --> ReviewNeeded{Human Review<br>Required?}
-        ReviewNeeded -- Yes --> SubmitReview[Submit Review & Feedback]
-        ReviewNeeded -- No --> NextStepCheck
-        
-        SubmitReview --> ReviewApproved{Approved?}
-        ReviewApproved -- No --> ReviseStep[Agent Revises Step]
-        ReviewApproved -- Yes --> NextStepCheck
-        
-        ReviseStep --> GetOutput
-        
-        NextStepCheck{More Steps<br>Remaining?}
-        NextStepCheck -- Yes --> NextStep[Proceed to Next Step]
-        NextStepCheck -- No --> Complete[Complete Workflow]
-    end
-    
-    Complete --> FinalOutput[Get Final Workflow Output]
-    FinalOutput --> End([End])
-    
-    NextStep --> PollStatus
-    
-    %% Apply styles
-    class Start,End endpoint
-    class StatusCheck,ReviewNeeded,ReviewApproved,NextStepCheck decision
-    class CheckAgents,CreateWorkflow,StartWorkflow,WorkflowID,PollStatus,GetOutput,SubmitReview,ReviseStep,NextStep,FinalOutput process
-    class Complete highlight
-```
-
-## Overview
-
-This API allows you to:
-- Create workflows with multiple sequential agent steps
-- Monitor workflow progress in real-time
-- Review and provide feedback on agent outputs
-- Maintain context between workflow steps
-- Configure agent-specific metadata for specialized tasks
-
-## Getting Started
-
-### Prerequisites
-- Python 3.8+
-- Required packages: `Model Context Protocol`, `Agno Multi Agent Framework`
-
-### Basic Usage
-### API Documentation
-
-This document provides comprehensive information about the available API endpoints for managing users, agents, workflows, analytics, and tools.
-
-#### Table of Contents
+## Table of Contents
 - [Users](#users)
 - [Agents](#agents)
 - [Workflows](#workflows)
 - [Analytics](#analytics)
 - [Tools](#tools)
 
-### Users
+## Users
 
-#### Create User
+### Create User
 **Endpoint:** `POST /users/`
 
 **Description:** Create a new user or get existing user.
@@ -110,9 +31,9 @@ This document provides comprehensive information about the available API endpoin
 }
 ```
 
-### Agents
+## Agents
 
-#### Create Agent
+### Create Agent
 **Endpoint:** `POST /create_agent/`
 
 **Description:** Create a new agent with custom configuration.
@@ -145,7 +66,7 @@ This document provides comprehensive information about the available API endpoin
 }
 ```
 
-#### Delete Agent
+### Delete Agent
 **Endpoint:** `DELETE /agents/{agent_id}`
 
 **Description:** Delete a user-defined agent.
@@ -162,7 +83,7 @@ DELETE /agents/research_assistant?user_id=ext_123456
 }
 ```
 
-#### Get Available Agents
+### Get Available Agents
 **Endpoint:** `GET /available_agents`
 
 **Description:** List all available agents in the system including user-defined agents.
@@ -195,7 +116,7 @@ GET /available_agents?user_id=ext_123456
 }
 ```
 
-#### Get User Agents
+### Get User Agents
 **Endpoint:** `GET /user_agents`
 
 **Description:** List only user-defined agents.
@@ -223,9 +144,9 @@ GET /user_agents?user_id=ext_123456
 }
 ```
 
-### Workflows
+## Workflows
 
-#### Start Workflow
+### Start Workflow
 **Endpoint:** `POST /start_workflow/`
 
 **Description:** Start a new workflow with defined steps.
@@ -267,7 +188,7 @@ GET /user_agents?user_id=ext_123456
 }
 ```
 
-#### Review Workflow
+### Review Workflow
 **Endpoint:** `POST /review/{workflow_id}`
 
 **Description:** Review and optionally edit a workflow step output.
@@ -289,7 +210,7 @@ GET /user_agents?user_id=ext_123456
 }
 ```
 
-#### Get Workflow Output
+### Get Workflow Output
 **Endpoint:** `GET /workflow_output/{workflow_id}`
 
 **Description:** Get the outputs from a workflow.
@@ -326,7 +247,7 @@ GET /workflow_output/a1b2c3d4-e5f6-7890-abcd-1234567890ab?user_id=ext_123456
 }
 ```
 
-#### Get Workflow Status
+### Get Workflow Status
 **Endpoint:** `GET /workflow_status/{workflow_id}`
 
 **Description:** Get the current status of a workflow.
@@ -347,7 +268,7 @@ GET /workflow_status/a1b2c3d4-e5f6-7890-abcd-1234567890ab?user_id=ext_123456
 }
 ```
 
-#### Get User Workflows
+### Get User Workflows
 **Endpoint:** `GET /user_workflows`
 
 **Description:** List workflows created by the user.
@@ -383,9 +304,9 @@ GET /user_workflows?user_id=ext_123456
 }
 ```
 
-### Analytics
+## Analytics
 
-#### Get Workflow Analytics
+### Get Workflow Analytics
 **Endpoint:** `GET /workflow_analytics/{workflow_id}`
 
 **Description:** Get analytics for each agent used in a workflow.
@@ -426,9 +347,9 @@ GET /workflow_analytics/a1b2c3d4-e5f6-7890-abcd-1234567890ab?user_id=ext_123456
 }
 ```
 
-### Tools
+## Tools
 
-#### Get Available Tools
+### Get Available Tools
 **Endpoint:** `GET /available_tools`
 
 **Description:** List all available tools that can be used with custom agents.
